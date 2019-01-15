@@ -20,21 +20,24 @@ if (annyang) {
         "I buy a beer": function () {
             let value = parseInt($("[name='cp']").val()) - 1;
             $("[name='cp']").val(value);
-            update("cp", value).then(location.reload);
+            update("cp", value);
         },
         "Round of beers on me": function () {
             let value = parseInt($("[name='cp']").val()) - 5;
             $("[name='cp']").val(value);
-            update("cp", value).then(location.reload);
+            update("cp", value);
         },
         "Reset money" : function () {
             $("[name='cp']").val(30);
-            update("cp", 30).then(location.reload);
+            update("cp", 30);
         },
         "Reroll stats": function () {
-            $.when.apply($, stats.map(function (stat) {
-                return update(stat.toLowerCase(), rollStat());
-            })).then(location.reload);
+            stats.forEach(function (stat) {
+                let roll = rollStat();
+
+                update(stat.toLowerCase(), roll);
+                $("[name='" + stat + "score']").val(roll)
+            });
         },
         "Reset stats" : function () {
             $("[name='Strengthscore']").val(16);
@@ -44,9 +47,9 @@ if (annyang) {
             $("[name='Intelligencescore']").val(8);
             $("[name='Charismascore']").val(16);
 
-            $.when.apply($, stats.map(function (stat) {
+            stats.forEach(function (stat) {
                 return update(stat, $("[name='" + stat + "score']").val());
-            })).then(location.reload);
+            });
         }
     };
 
@@ -54,7 +57,7 @@ if (annyang) {
     for (let i = 0; i < 1000; i++) {
         commands[charName + " takes " + i + " damage"] = function () {
             takeDamage(i);
-            update("current_hp", $("[name='currenthp']").val()).then(location.reload);
+            update("current_hp", $("[name='currenthp']").val());
         }
     }
 
@@ -62,7 +65,7 @@ if (annyang) {
     for (let i = 0; i < 1000; i++) {
         commands[charName + " heals " + i] = function () {
             healsHitpoints(i);
-            update("current_hp", $("[name='currenthp']").val()).then(location.reload);
+            update("current_hp", $("[name='currenthp']").val());
         }
     }
 
