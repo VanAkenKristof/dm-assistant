@@ -33,7 +33,7 @@ if (annyang) {
         },
         "Reroll stats": function () {
             $.when.apply($, stats.map(function (stat) {
-                update(stat.toLowerCase(), rollStat());
+                return update(stat.toLowerCase(), rollStat());
             })).then(location.reload);
         },
         "Reset stats" : function () {
@@ -44,8 +44,8 @@ if (annyang) {
             $("[name='Intelligencescore']").val(8);
             $("[name='Charismascore']").val(16);
 
-            $.when.apply($, stats.forEach(function (stat) {
-                update(stat, $("[name='" + stat + "score']").val());
+            $.when.apply($, stats.map(function (stat) {
+                return update(stat, $("[name='" + stat + "score']").val());
             })).then(location.reload);
         }
     };
