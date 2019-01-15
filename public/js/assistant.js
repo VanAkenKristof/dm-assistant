@@ -25,16 +25,14 @@ if (annyang) {
         "Round of beers on me": function () {
             let value = parseInt($("[name='cp']").val()) - 5;
             $("[name='cp']").val(value);
-            update("cp", value);
-            location.reload();
+            update("cp", value).then(location.reload);
         },
         "Reset money" : function () {
             $("[name='cp']").val(30);
-            update("cp", 30);
-            location.reload();
+            update("cp", 30).then(location.reload);
         },
         "Reroll stats": function () {
-            $.when(stats.map(function (stat) {
+            $.when.apply($, stats.map(function (stat) {
                 update(stat.toLowerCase(), rollStat());
             })).then(location.reload);
         },
@@ -46,10 +44,9 @@ if (annyang) {
             $("[name='Intelligencescore']").val(8);
             $("[name='Charismascore']").val(16);
 
-            stats.forEach(function (stat) {
+            $.when.apply($, stats.forEach(function (stat) {
                 update(stat, $("[name='" + stat + "score']").val());
-            });
-            location.reload();
+            })).then(location.reload);
         }
     };
 
@@ -57,8 +54,7 @@ if (annyang) {
     for (let i = 0; i < 1000; i++) {
         commands[charName + " takes " + i + " damage"] = function () {
             takeDamage(i);
-            update("current_hp", $("[name='currenthp']").val());
-            location.reload();
+            update("current_hp", $("[name='currenthp']").val()).then(location.reload);
         }
     }
 
@@ -66,8 +62,7 @@ if (annyang) {
     for (let i = 0; i < 1000; i++) {
         commands[charName + " heals " + i] = function () {
             healsHitpoints(i);
-            update("current_hp", $("[name='currenthp']").val());
-            location.reload();
+            update("current_hp", $("[name='currenthp']").val()).then(location.reload);
         }
     }
 
