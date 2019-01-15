@@ -20,8 +20,7 @@ if (annyang) {
         "I buy a beer": function () {
             let value = parseInt($("[name='cp']").val()) - 1;
             $("[name='cp']").val(value);
-            update("cp", value);
-            location.reload();
+            update("cp", value).then(location.reload);
         },
         "Round of beers on me": function () {
             let value = parseInt($("[name='cp']").val()) - 5;
@@ -35,10 +34,9 @@ if (annyang) {
             location.reload();
         },
         "Reroll stats": function () {
-            stats.forEach(function (stat) {
+            $.when(stats.map(function (stat) {
                 update(stat.toLowerCase(), rollStat());
-            });
-            location.reload();
+            })).then(location.reload);
         },
         "Reset stats" : function () {
             $("[name='Strengthscore']").val(16);
@@ -81,7 +79,7 @@ let update = function (key, value) {
     let data = {};
     data[key] = value;
 
-    $.ajax({
+    return $.ajax({
         url: '/update',
         method: "POST",
         headers: {
